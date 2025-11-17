@@ -1,5 +1,6 @@
+-- Fixed column names to match schema: image_url -> featured_image_url, added author_id
 -- Insert sample articles for Om oss category
-INSERT INTO articles (title, slug, content, excerpt, published, category, image_url, created_at, updated_at)
+INSERT INTO articles (title, slug, content, excerpt, published, category, featured_image_url, author_id, created_at, updated_at)
 VALUES 
   (
     'Hvem er vi?',
@@ -13,6 +14,7 @@ VALUES
     true,
     'om-oss',
     '/penguins.jpeg',
+    NULL,
     NOW(),
     NOW()
   ),
@@ -28,12 +30,13 @@ VALUES
     true,
     'om-oss',
     '/white-shell.jpeg',
+    NULL,
     NOW(),
     NOW()
   );
 
 -- Insert sample articles for Prosjekter category
-INSERT INTO articles (title, slug, content, excerpt, published, category, image_url, created_at, updated_at)
+INSERT INTO articles (title, slug, content, excerpt, published, category, featured_image_url, author_id, created_at, updated_at)
 VALUES 
   (
     'Forskningsprosjekt: Postvekst i norsk kontekst',
@@ -47,6 +50,7 @@ VALUES
     true,
     'prosjekter',
     '/nautilus-shell.jpeg',
+    NULL,
     NOW(),
     NOW()
   ),
@@ -62,6 +66,7 @@ VALUES
     true,
     'prosjekter',
     '/pink-shell.jpeg',
+    NULL,
     NOW(),
     NOW()
   ),
@@ -77,12 +82,13 @@ VALUES
     true,
     'prosjekter',
     '/white-shell.jpeg',
+    NULL,
     NOW(),
     NOW()
   );
 
 -- Insert sample articles for I media category
-INSERT INTO articles (title, slug, content, excerpt, published, category, created_at, updated_at)
+INSERT INTO articles (title, slug, content, excerpt, published, category, author_id, created_at, updated_at)
 VALUES 
   (
     'Intervju i Klassekampen',
@@ -95,6 +101,7 @@ VALUES
     'ROBUST-leder i stort intervju om postvekst',
     true,
     'i-media',
+    NULL,
     NOW(),
     NOW()
   ),
@@ -109,12 +116,13 @@ VALUES
     'ROBUST argumenterer for økonomisk omstilling',
     true,
     'i-media',
+    NULL,
     NOW(),
     NOW()
   );
 
 -- Insert sample contact information
-INSERT INTO articles (title, slug, content, published, category, created_at, updated_at)
+INSERT INTO articles (title, slug, content, published, category, author_id, created_at, updated_at)
 VALUES 
   (
     'Kontakt oss',
@@ -128,6 +136,7 @@ VALUES
     Organisasjonsnummer: 123 456 789',
     true,
     'kontakt',
+    NULL,
     NOW(),
     NOW()
   );
