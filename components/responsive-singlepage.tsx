@@ -33,7 +33,7 @@ function BannerHeader() {
         {/* Right Banner - Pink */}
         <div className="w-[120px] bg-[#ffc2c2] flex items-center justify-center relative">
           <Image
-            src="/robust-logo-red-text.jpg"
+            src="/logo.png"
             alt="ROBUST Logo"
             width={100}
             height={40}
@@ -113,7 +113,7 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
         <div className="max-w-[600px] w-full">
           <div className="aspect-[559/481] w-full relative mb-8">
             <Image
-              src="/sustainable-city-with-nature-and-buildings.jpg"
+              src="/image1.png"
               alt="Sustainable city illustration"
               fill
               className="object-cover rounded-lg"
@@ -171,7 +171,7 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
         <div className="max-w-[600px] w-full">
           <div className="aspect-[559/481] w-full relative mb-8">
             <Image
-              src="/people-collaborating-in-community-garden.jpg"
+              src="/image2.png"
               alt="Community collaboration"
               fill
               className="object-cover rounded-lg"
@@ -253,7 +253,7 @@ function InspirationSection({ activeSection }: { activeSection: string }) {
     <section className="relative min-h-[400px] flex items-center justify-center bg-[#ffc2c2]">
       <div className="absolute inset-0">
         <Image
-          src="/snail-shell-spiral-pattern-natural-background.jpg"
+          src="/snail.png"
           alt="Snail shell pattern"
           fill
           className="object-cover opacity-30"
