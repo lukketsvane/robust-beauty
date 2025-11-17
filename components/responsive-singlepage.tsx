@@ -23,7 +23,7 @@ function BannerHeader() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-white hover:text-[#ffc2c2] transition-colors z-20 p-2"
+            className="md:hidden text-white hover:text-[#ffc2c2] transition-colors z-20 p-2"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -34,8 +34,7 @@ function BannerHeader() {
             FORENINGEN ROBUST
           </Link>
 
-          {/* Logo - visible on desktop */}
-          <Link href="/" className="hidden md:flex items-center justify-center w-12 h-12 ml-auto">
+          <Link href="/" className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 md:ml-auto shrink-0">
             <Image
               src="/robust-logo.png"
               alt="ROBUST Logo"
@@ -68,36 +67,69 @@ function BannerHeader() {
   );
 }
 
-// Desktop Navigation Component
 function DesktopNavigation({ activeItem }: { activeItem: string }) {
   const navItems = [
-    { name: "Om oss", href: "/om-oss" },
-    { name: "Prosjekter", href: "/prosjekter" },
-    { name: "I media", href: "/i-media" },
-    { name: "Kontakt", href: "/kontakt" }
+    { name: "Om oss", href: "#om-oss" },
+    { name: "Prosjekter", href: "#prosjekter" },
+    { name: "I media", href: "#i-media" },
+    { name: "Kontakt", href: "#kontakt" }
   ];
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      const headerOffset = 72;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
-    <nav className="hidden md:flex flex-row gap-12">
+    <nav className="hidden md:flex flex-row gap-8 items-center">
       {navItems.map((item) => (
-        <Link
+        <a
           key={item.name}
           href={item.href}
-          className={`font-['JetBrains_Mono',monospace] text-white text-[20px] transition-all duration-300 hover:opacity-80 whitespace-nowrap relative text-left ${
+          onClick={(e) => handleClick(e, item.href)}
+          className={`font-['JetBrains_Mono',monospace] text-white text-[16px] transition-all duration-300 hover:opacity-80 whitespace-nowrap relative ${
             activeItem === item.name
-              ? "font-bold"
+              ? "font-bold after:content-[''] after:absolute after:left-0 after:right-0 after:bottom-[-4px] after:h-[2px] after:bg-white"
               : "font-normal"
           }`}
         >
           {item.name}
-        </Link>
+        </a>
       ))}
     </nav>
   );
 }
 
-// Content Section 1: Image (Pink) + Text (Red)
-function ContentSection1({ activeSection }: { activeSection: string }) {
+function DesktopHeader({ activeSection }: { activeSection: string }) {
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#e3160b]">
+      <div className="h-[72px] flex items-center justify-between px-6">
+        <DesktopNavigation activeItem={activeSection} />
+        
+        <Link href="/" className="flex items-center justify-center w-12 h-12 shrink-0">
+          <Image
+            src="/robust-logo.png"
+            alt="ROBUST Logo"
+            width={48}
+            height={48}
+            className="object-contain"
+          />
+        </Link>
+      </div>
+    </header>
+  );
+}
+
+function ContentSection1() {
   return (
     <section id="om-oss" className="flex flex-col md:flex-row min-h-screen">
       {/* Pink section - Left on desktop, equal width */}
@@ -140,12 +172,7 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
         </div>
       </div>
 
-      {/* Red section - Right on desktop, equal width */}
       <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col relative">
-        <div className="mb-16">
-          <DesktopNavigation activeItem={activeSection} />
-        </div>
-        
         <div className="flex-1 flex flex-col justify-center">
           <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
             Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
@@ -183,16 +210,10 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
   );
 }
 
-// Content Section 2: Text (Red) + Image (Pink)
-function ContentSection2({ activeSection }: { activeSection: string }) {
+function ContentSection2() {
   return (
     <section id="prosjekter" className="flex flex-col md:flex-row min-h-screen">
-      {/* Red section with navigation - Left on desktop, equal width */}
       <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col">
-        <div className="mb-16">
-          <DesktopNavigation activeItem={activeSection} />
-        </div>
-        
         <div className="flex-1 flex flex-col justify-center">
           <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
             Våre prosjekter
@@ -212,34 +233,6 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
           >
             Les mer
           </Link>
-        </div>
-      </div>
-
-      {/* Mobile version */}
-      <div className="md:hidden bg-[#ffc2c2] flex flex-col">
-        <div className="px-6 py-12">
-          <div className="max-w-[600px] mx-auto">
-            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[16px] leading-relaxed mb-6">
-              Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
-            </p>
-            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[16px] leading-relaxed mb-4">
-              Våre tre retningsstyrere for dette arbeidet er:
-            </p>
-            <ul className="font-['JetBrains_Mono',monospace] text-[#000000] text-[16px] leading-relaxed space-y-3">
-              <li>• Å forankre arbeidet akademisk og teoretisk i degrowth.</li>
-              <li>• Å jobbe for økt forestillingsevne om en fremtid vi kan glede oss til</li>
-              <li>• Å bruke kunst og kreativ formidling til å gjøre oss forstått</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="w-full aspect-[4/3] relative">
-          <Image
-            src="/white-shell.jpeg"
-            alt="Shell on green background"
-            fill
-            className="object-cover"
-          />
         </div>
       </div>
 
@@ -287,8 +280,7 @@ function ProfileCard({ name, description, hasPhoto }: { name: string; descriptio
   );
 }
 
-// Team Section
-function TeamSection({ activeSection }: { activeSection: string }) {
+function TeamSection() {
   const teamMembers = [
     { name: "Christina Lund", description: "Aula er en digital plattform som forenkler deltakelse i lokaldemokratiet. Innbyggere kan dele sine tanker og kunnskap når det passer dem.", hasPhoto: true },
     { name: "Eline Mannino", description: "Aula er en digital plattform som gjør det lett å engasjere seg i lokaldemokratiet. Innbyggere kan bidra med innspill og kunnskap når det passer dem." },
@@ -299,11 +291,7 @@ function TeamSection({ activeSection }: { activeSection: string }) {
 
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
-      {/* Red section with navigation - Left on desktop, equal width */}
       <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col">
-        <div className="mb-16">
-          <DesktopNavigation activeItem={activeSection} />
-        </div>
         <div className="flex-1 flex flex-col justify-center">
           <h2 className="font-['JetBrains_Mono',monospace] text-white text-[28px] leading-relaxed mb-8 font-bold">
             ROBUST i media
@@ -380,9 +368,18 @@ function Footer({ activeSection }: { activeSection: string }) {
   );
 }
 
-// Main Component
 export default function ResponsiveSinglepage() {
   const [activeSection, setActiveSection] = useState("Om oss");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -415,11 +412,11 @@ export default function ResponsiveSinglepage() {
 
   return (
     <div className="min-h-screen">
-      <BannerHeader />
+      {isMobile ? <BannerHeader /> : <DesktopHeader activeSection={activeSection} />}
       <main className="mt-[72px]">
-        <ContentSection1 activeSection={activeSection} />
-        <ContentSection2 activeSection={activeSection} />
-        <TeamSection activeSection={activeSection} />
+        <ContentSection1 />
+        <ContentSection2 />
+        <TeamSection />
         <InspirationSection activeSection={activeSection} />
         <Footer activeSection={activeSection} />
       </main>
