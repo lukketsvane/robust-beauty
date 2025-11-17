@@ -52,7 +52,7 @@ export default function AdminLoginPage() {
         <div className="flex flex-col gap-6">
           <div className="flex justify-center mb-4">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/19FB747C-1357-492B-94C5-34DD73BFA29C-jyckPFzIekAjNBZBCrYzhbZehSegXV.png"
+              src="/images/design-mode/19FB747C-1357-492B-94C5-34DD73BFA29C.png"
               alt="ROBUST Logo"
               width={120}
               height={120}
