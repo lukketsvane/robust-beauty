@@ -3,8 +3,9 @@ import { redirect } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArticleList } from "@/components/admin/article-list";
+import { AnalyticsDashboard } from "@/components/admin/analytics-dashboard";
 import { createClient } from "@/lib/supabase/server";
-import { Eye, LogOut, Plus, FileText, Users, TrendingUp } from 'lucide-react';
+import { Eye, LogOut, Plus, FileText, TrendingUp } from 'lucide-react';
 
 export default async function AdminDashboard() {
   const cookieStore = await cookies();
@@ -55,6 +56,10 @@ export default async function AdminDashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-6">
+        <div className="mb-6">
+          <AnalyticsDashboard />
+        </div>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           <div className="bg-white border p-4">
             <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
@@ -79,7 +84,7 @@ export default async function AdminDashboard() {
           </div>
           <div className="bg-white border p-4">
             <div className="flex items-center gap-2 text-[#e3160b] text-xs mb-1">
-              <Users className="h-3 w-3" />
+              <FileText className="h-3 w-3" />
               <span>Kategorier</span>
             </div>
             <div className="text-2xl font-bold">4</div>

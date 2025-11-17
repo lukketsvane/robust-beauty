@@ -52,9 +52,9 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
   ];
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 max-w-full overflow-x-auto">
       {/* Toolbar */}
-      <div className="flex items-center gap-1 border border-input bg-background p-2">
+      <div className="flex items-center gap-1 border border-input bg-background p-2 flex-wrap">
         {toolbarButtons.map((btn, idx) => (
           <Button
             key={idx}
@@ -63,30 +63,30 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
             size="sm"
             onClick={btn.action}
             title={btn.label}
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 flex-shrink-0"
           >
             <btn.icon size={16} />
           </Button>
         ))}
-        <div className="w-px h-6 bg-border mx-1" />
+        <div className="w-px h-6 bg-border mx-1 flex-shrink-0" />
         <Button
           type="button"
           variant="ghost"
           size="sm"
           onClick={() => setShowImageUpload(!showImageUpload)}
           title="Sett inn bilde"
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 p-0 flex-shrink-0"
         >
           <ImageIcon size={16} />
         </Button>
-        <div className="flex-1" />
+        <div className="flex-1 min-w-[20px]" />
         <Button
           type="button"
           variant="ghost"
           size="sm"
           onClick={() => setShowPreview(!showPreview)}
           title={showPreview ? "Vis editor" : "Vis forhåndsvisning"}
-          className="h-8 px-3"
+          className="h-8 px-3 flex-shrink-0"
         >
           {showPreview ? <EyeOff size={16} /> : <Eye size={16} />}
           <span className="ml-2 text-xs">{showPreview ? "Rediger" : "Forhåndsvisning"}</span>
@@ -106,8 +106,8 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
 
       {/* Editor/Preview */}
       {showPreview ? (
-        <div className="min-h-[400px] border border-input bg-background p-4 prose prose-sm max-w-none">
-          <ReactMarkdown>{value}</ReactMarkdown>
+        <div className="min-h-[400px] max-w-full border border-input bg-background p-4 prose prose-sm overflow-x-auto overflow-wrap-anywhere">
+          <ReactMarkdown className="break-words">{value}</ReactMarkdown>
         </div>
       ) : (
         <textarea
@@ -116,7 +116,7 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           rows={20}
-          className="w-full min-h-[400px] border border-input bg-background px-3 py-2 text-sm font-mono resize-y focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="w-full max-w-full min-h-[400px] border border-input bg-background px-3 py-2 text-sm font-mono resize-y focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring break-all overflow-x-auto"
         />
       )}
 
