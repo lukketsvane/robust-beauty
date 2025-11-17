@@ -3,57 +3,63 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Linkedin, Mail } from 'lucide-react';
 import Image from "next/image";
+import Link from "next/link";
 
 // Banner Header Component
 function BannerHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const menuItems = [
+    { name: "Om oss", href: "/om-oss" },
+    { name: "Prosjekter", href: "/prosjekter" },
+    { name: "I media", href: "/i-media" },
+    { name: "Kontakt", href: "/kontakt" }
+  ];
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 h-[60px] flex">
-        {/* Left Banner - Red */}
-        <div className="flex-1 bg-[#e3160b] flex items-center justify-start px-6">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#e3160b]">
+        <div className="h-[72px] flex items-center justify-between px-4 md:px-6">
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white hover:text-[#ffc2c2] transition-colors z-20"
+            className="text-white hover:text-[#ffc2c2] transition-colors z-20 p-2"
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
 
-          {/* Title */}
-          <div className="flex-1 flex justify-center md:justify-start">
-            <h1 className="font-['JetBrains_Mono',monospace] font-bold text-white text-[20px] md:text-[24px] tracking-tight">
-              FORENINGEN ROBUST
-            </h1>
-          </div>
-        </div>
+          {/* Title - centered on mobile */}
+          <Link href="/" className="font-['JetBrains_Mono',monospace] font-bold text-white text-[18px] md:text-[24px] tracking-tight absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 hover:text-[#ffc2c2] transition-colors">
+            FORENINGEN ROBUST
+          </Link>
 
-        {/* Right Banner - Pink */}
-        <div className="w-[64px] bg-[#ffc2c2] flex items-center justify-center relative">
-          <Image
-            src="/robust-logo.png"
-            alt="ROBUST Logo"
-            width={80}
-            height={80}
-            className="object-contain"
-          />
+          {/* Logo - visible on desktop */}
+          <Link href="/" className="hidden md:flex items-center justify-center w-12 h-12 ml-auto">
+            <Image
+              src="/robust-logo.png"
+              alt="ROBUST Logo"
+              width={48}
+              height={48}
+              className="object-contain"
+            />
+          </Link>
         </div>
       </header>
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
-        <nav className="fixed top-[60px] left-0 right-0 bg-[#e3160b] z-40 md:hidden">
-          <div className="flex flex-col py-4">
-            {["Om oss", "Prosjekter", "I media", "Kontakt"].map((item) => (
-              <button
-                key={item}
+        <nav className="fixed top-[72px] left-0 right-0 bg-[#e3160b] z-40 shadow-lg">
+          <div className="flex flex-col py-2">
+            {menuItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-white text-lg py-3 px-6 hover:bg-[#c41309] transition-colors text-left font-['JetBrains_Mono',monospace]"
+                className="text-white text-[16px] py-4 px-6 hover:bg-[#c41309] transition-colors text-left font-['JetBrains_Mono',monospace]"
               >
-                {item}
-              </button>
+                {item.name}
+              </Link>
             ))}
           </div>
         </nav>
@@ -65,40 +71,26 @@ function BannerHeader() {
 // Desktop Navigation Component
 function DesktopNavigation({ activeItem }: { activeItem: string }) {
   const navItems = [
-    { name: "Om oss", id: "om-oss" },
-    { name: "Prosjekter", id: "prosjekter" },
-    { name: "I media", id: "i-media" },
-    { name: "Kontakt", id: "kontakt" }
+    { name: "Om oss", href: "/om-oss" },
+    { name: "Prosjekter", href: "/prosjekter" },
+    { name: "I media", href: "/i-media" },
+    { name: "Kontakt", href: "/kontakt" }
   ];
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 100;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  };
 
   return (
     <nav className="hidden md:flex flex-col gap-8">
       {navItems.map((item) => (
-        <button
+        <Link
           key={item.name}
-          onClick={() => scrollToSection(item.id)}
-          className={`font-['JetBrains_Mono',monospace] text-white text-[20px] transition-all duration-300 hover:opacity-80 whitespace-nowrap relative text-left ${
+          href={item.href}
+          className={`font-['JetBrains_Mono',monospace] text-white text-[20px] transition-all duration-300 hover:opacity-80 whitespace-nowrap relative text-left font-['JetBrains_Mono',monospace] ${
             activeItem === item.name
               ? "font-bold"
               : "font-normal"
           }`}
         >
           {item.name}
-        </button>
+        </Link>
       ))}
     </nav>
   );
@@ -108,32 +100,94 @@ function DesktopNavigation({ activeItem }: { activeItem: string }) {
 function ContentSection1({ activeSection }: { activeSection: string }) {
   return (
     <section id="om-oss" className="flex flex-col md:flex-row min-h-screen">
-      {/* Pink section with image */}
-      <div className="flex-1 bg-[#ffc2c2] p-8 md:p-16 flex flex-col items-center justify-center">
-        <div className="max-w-[600px] w-full">
-          <div className="aspect-[4/3] w-full relative mb-8">
+      {/* Pink section - Left on desktop */}
+      <div className="flex-1 bg-[#ffc2c2] flex flex-col">
+        {/* Mobile layout */}
+        <div className="md:hidden flex flex-col">
+          <div className="px-6 py-12">
+            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed text-left">
+              For å utvikle samfunnet til en post-kapitalistisk fremtid må vi holde minst to tanker i hodet samtidig
+            </p>
+          </div>
+          
+          <div className="w-full aspect-[3/4] relative">
             <Image
-              src="/white-shell.jpeg"
-              alt="Shell on green background"
+              src="/penguins.jpeg"
+              alt="Two penguins together"
               fill
-              className="object-cover rounded-lg"
+              className="object-cover"
+              priority
             />
           </div>
-          <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[18px] md:text-[20px] leading-relaxed text-center">
-            For å utvikle samfunnet til en post-kapitalistisk fremtid må vi holde minst to tanker i hodet samtidig
-          </p>
+        </div>
+
+        {/* Desktop layout */}
+        <div className="hidden md:flex md:flex-col md:items-center md:justify-center md:p-16">
+          <div className="max-w-[500px]">
+            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
+              For å utvikle samfunnet til en post-kapitalistisk fremtid må vi holde minst to tanker i hodet samtidig
+            </p>
+            <div className="aspect-[3/4] w-full max-w-[400px] mx-auto relative">
+              <Image
+                src="/penguins.jpeg"
+                alt="Two penguins together"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Red section with navigation and text */}
-      <div className="flex-1 bg-[#e3160b] p-8 md:p-16 flex flex-col">
-        <div className="mb-12">
+      {/* Red section with logo, navigation and text - Right on desktop */}
+      <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col relative">
+        {/* Logo in top right corner */}
+        <div className="absolute top-8 right-8">
+          <Image
+            src="/robust-logo.png"
+            alt="ROBUST Logo"
+            width={80}
+            height={80}
+            className="object-contain"
+          />
+        </div>
+
+        <div className="mb-16">
           <DesktopNavigation activeItem={activeSection} />
         </div>
-        <div className="flex-1 flex items-center">
-          <p className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed max-w-[500px]">
-            The aim of ROBUST is to contribute to reaching a resilient economy within planetary boundaries, ensuring a good life for all. The collective will promote this through activities like spreading information on degrowth practices, producing eco-solidarity-based economic analyses, showcasing regenerative economy examples, fostering artistic engagement, and participating in activism.
+        
+        <div className="flex-1 flex flex-col justify-center">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
+            Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
+          </h2>
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[20px] leading-relaxed mb-6">
+            Våre tre retningsstyrere for dette arbeidet er
           </p>
+          <ul className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed space-y-4">
+            <li>Å forankre arbeidet akademisk og teoretisk i degrowth.</li>
+            <li>Å jobbe for økt forestillingsevne om en fremtid vi kan glede oss til</li>
+            <li>Å bruke kunst og kreativ formidling til å gjøre oss forstått</li>
+          </ul>
+          
+          <Link 
+            href="/om-oss"
+            className="mt-8 inline-flex items-center justify-center bg-white text-[#e3160b] font-['JetBrains_Mono',monospace] font-bold px-8 py-3 rounded hover:bg-[#ffc2c2] transition-colors w-fit"
+          >
+            Les mer
+          </Link>
+        </div>
+
+        {/* Image in bottom right */}
+        <div className="mt-auto flex justify-center">
+          <div className="w-[400px] aspect-square relative">
+            <Image
+              src="/pink-shell.jpeg"
+              alt="Beautiful pink and orange shell"
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -144,42 +198,76 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
 function ContentSection2({ activeSection }: { activeSection: string }) {
   return (
     <section id="prosjekter" className="flex flex-col md:flex-row min-h-screen">
-      {/* Red section with navigation */}
-      <div className="flex-1 bg-[#e3160b] p-8 md:p-16 flex flex-col">
-        <div className="mb-12">
+      {/* Red section with navigation - Left on desktop */}
+      <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col">
+        <div className="mb-16">
           <DesktopNavigation activeItem={activeSection} />
         </div>
-        <div className="flex-1 flex items-center">
-          <div className="max-w-[500px]">
-            <p className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed mb-6">
+        
+        <div className="flex-1 flex flex-col justify-center">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
+            Våre prosjekter
+          </h2>
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[20px] leading-relaxed mb-6">
+            Vi jobber aktivt med ulike prosjekter for å spre kunnskap om postvekst samfunn gjennom:
+          </p>
+          <ul className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed space-y-4">
+            <li>Forskningsbasert analyse og formidling</li>
+            <li>Kreative verksteder og arrangementer</li>
+            <li>Samarbeid med organisasjoner og institusjoner</li>
+          </ul>
+          
+          <Link 
+            href="/prosjekter"
+            className="mt-8 inline-flex items-center justify-center bg-white text-[#e3160b] font-['JetBrains_Mono',monospace] font-bold px-8 py-3 rounded hover:bg-[#ffc2c2] transition-colors w-fit"
+          >
+            Les mer
+          </Link>
+        </div>
+      </div>
+
+      {/* Mobile version */}
+      <div className="md:hidden bg-[#ffc2c2] flex flex-col">
+        <div className="px-6 py-12">
+          <div className="max-w-[600px] mx-auto">
+            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[16px] leading-relaxed mb-6">
               Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
             </p>
-            <p className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed mb-4">
+            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[16px] leading-relaxed mb-4">
               Våre tre retningsstyrere for dette arbeidet er:
             </p>
-            <ul className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed space-y-3">
+            <ul className="font-['JetBrains_Mono',monospace] text-[#000000] text-[16px] leading-relaxed space-y-3">
               <li>• Å forankre arbeidet akademisk og teoretisk i degrowth.</li>
               <li>• Å jobbe for økt forestillingsevne om en fremtid vi kan glede oss til</li>
               <li>• Å bruke kunst og kreativ formidling til å gjøre oss forstått</li>
             </ul>
           </div>
         </div>
+        
+        <div className="w-full aspect-[4/3] relative">
+          <Image
+            src="/white-shell.jpeg"
+            alt="Shell on green background"
+            fill
+            className="object-cover"
+          />
+        </div>
       </div>
 
-      {/* Pink section with image */}
-      <div className="flex-1 bg-[#ffc2c2] p-8 md:p-16 flex flex-col items-center justify-center">
-        <div className="max-w-[600px] w-full">
-          <div className="aspect-[4/3] w-full relative mb-8">
-            <Image
-              src="/penguins.jpeg"
-              alt="Two penguins together"
-              fill
-              className="object-cover rounded-lg"
-            />
-          </div>
-          <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[18px] md:text-[20px] leading-relaxed text-center">
+      {/* Pink section - Right on desktop */}
+      <div className="hidden md:flex flex-1 bg-[#ffc2c2] p-16 flex-col items-center justify-center">
+        <div className="max-w-[500px]">
+          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
             For å utvikle samfunnet til en post-kapitalistisk fremtid må vi ha flere tanker i hodet samtidig
           </p>
+          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
+            <Image
+              src="/white-shell.jpeg"
+              alt="Shell on green background"
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -202,10 +290,10 @@ function ProfileCard({ name, description, hasPhoto }: { name: string; descriptio
       ) : (
         <div className="w-20 h-20 bg-[#e3160b] rounded-full mb-4 mx-auto" />
       )}
-      <h3 className="font-['JetBrains_Mono',monospace] font-bold text-[#e3160b] text-center text-lg mb-3">
+      <h3 className="font-['JetBrains_Mono',monospace] font-bold text-[#e3160b] text-left text-lg mb-3">
         {name}
       </h3>
-      <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-sm leading-relaxed text-center">
+      <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-sm leading-relaxed text-left">
         {description}
       </p>
     </div>
@@ -224,34 +312,34 @@ function TeamSection({ activeSection }: { activeSection: string }) {
 
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
-      {/* Pink section with profiles */}
-      <div className="flex-1 bg-[#ffc2c2] p-8 md:p-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1200px] mx-auto">
-          {teamMembers.map((member, index) => (
-            <ProfileCard key={index} name={member.name} description={member.description} hasPhoto={member.hasPhoto} />
-          ))}
+      {/* Red section with navigation - Left on desktop */}
+      <div className="hidden md:flex w-[400px] bg-[#e3160b] p-16 flex-col">
+        <div className="mb-16">
+          <DesktopNavigation activeItem={activeSection} />
+        </div>
+        <div className="flex-1 flex flex-col justify-center">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[28px] leading-relaxed mb-8 font-bold">
+            ROBUST i media
+          </h2>
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed mb-6">
+            Se hvor vi har vært omtalt og våre egne bidrag i mediebildet.
+          </p>
+          
+          <Link 
+            href="/i-media"
+            className="mt-8 inline-flex items-center justify-center bg-white text-[#e3160b] font-['JetBrains_Mono',monospace] font-bold px-8 py-3 rounded hover:bg-[#ffc2c2] transition-colors w-fit"
+          >
+            Les mer
+          </Link>
         </div>
       </div>
 
-      {/* Red section with navigation */}
-      <div className="w-full md:w-[300px] bg-[#e3160b] p-8 md:p-16 flex flex-col">
-        <div className="mb-12">
-          <DesktopNavigation activeItem={activeSection} />
-        </div>
-        <div className="flex-1 flex items-center">
-          <div className="max-w-[500px]">
-            <p className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed mb-6">
-              Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
-            </p>
-            <p className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed mb-4">
-              Våre tre retningsstyrere for dette arbeidet er:
-            </p>
-            <ul className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed space-y-3">
-              <li>• Å forankre arbeidet akademisk og teoretisk i degrowth.</li>
-              <li>• Å jobbe for økt forestillingsevne om en fremtid vi kan glede oss til</li>
-              <li>• Å bruke kunst og kreativ formidling til å gjøre oss forstått</li>
-            </ul>
-          </div>
+      {/* Pink section with profiles - Right on desktop */}
+      <div className="flex-1 bg-[#ffc2c2] p-6 md:p-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-[1200px] mx-auto">
+          {teamMembers.map((member, index) => (
+            <ProfileCard key={index} name={member.name} description={member.description} hasPhoto={member.hasPhoto} />
+          ))}
         </div>
       </div>
     </section>
@@ -270,7 +358,7 @@ function InspirationSection({ activeSection }: { activeSection: string }) {
           className="object-cover opacity-40"
         />
       </div>
-      <div className="relative z-10 max-w-[800px] mx-auto px-8 py-16 text-center">
+      <div className="relative z-10 max-w-[800px] mx-auto px-8 py-16 text-left">
         <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[20px] md:text-[24px] leading-relaxed mb-6 font-bold">
           Sneglhuset er perfekt konstruert for at sneglen skal kunne bære det med sin egen muskelkraft.
         </p>
@@ -341,7 +429,7 @@ export default function ResponsiveSinglepage() {
   return (
     <div className="min-h-screen">
       <BannerHeader />
-      <main className="mt-[60px]">
+      <main className="mt-[72px]">
         <ContentSection1 activeSection={activeSection} />
         <ContentSection2 activeSection={activeSection} />
         <TeamSection activeSection={activeSection} />
