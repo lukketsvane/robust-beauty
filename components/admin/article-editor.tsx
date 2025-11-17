@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { useRouter } from 'next/navigation';
 import { ImageUpload } from "./image-upload";
+import { MarkdownEditor } from "./markdown-editor";
 
 type Article = {
   id: string;
@@ -157,14 +158,11 @@ export function ArticleEditor({ article, userId }: ArticleEditorProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="content">Innhold</Label>
-          <Textarea
-            id="content"
+          <Label htmlFor="content">Innhold (Markdown)</Label>
+          <MarkdownEditor
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Artikkelens innhold..."
-            rows={15}
-            className="font-mono"
+            onChange={setContent}
+            placeholder="Skriv artikkelens innhold her med Markdown-formatering..."
           />
         </div>
 

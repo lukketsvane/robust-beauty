@@ -128,10 +128,12 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
           {filteredArticles.map((article) => (
             <Card key={article.id}>
               <CardHeader className="pb-3">
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-base truncate mb-2">{article.title}</CardTitle>
-                    <div className="flex gap-2 mb-1">
+                <div className="flex justify-between items-start gap-2">
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <CardTitle className="text-base truncate mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                      {article.title}
+                    </CardTitle>
+                    <div className="flex gap-2 mb-1 flex-wrap">
                       <Badge variant="outline" className="text-xs">
                         {getCategoryLabel(article.category)}
                       </Badge>
@@ -143,14 +145,14 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
                       Oppdatert {formatDistanceToNow(new Date(article.updated_at), { addSuffix: true, locale: nb })}
                     </p>
                   </div>
-                  <div className="flex gap-1 shrink-0">
-                    <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0">
+                  <div className="flex gap-1 shrink-0 flex-nowrap">
+                    <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0 flex-shrink-0">
                       <Link href={`/admin/articles/${article.id}/edit`}>
                         <Edit className="h-4 w-4" />
                       </Link>
                     </Button>
                     {article.published && (
-                      <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0">
+                      <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0 flex-shrink-0">
                         <Link href={`/artikkel/${article.slug}`} target="_blank">
                           <Eye className="h-4 w-4" />
                         </Link>
@@ -160,7 +162,7 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
                       size="sm"
                       variant="destructive"
                       onClick={() => deleteArticle(article.id)}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 flex-shrink-0"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

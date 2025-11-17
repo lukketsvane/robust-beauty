@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -45,7 +46,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
       {/* Content */}
       <article className="max-w-[900px] mx-auto px-6 py-12">
-        <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+        <div className="bg-white overflow-hidden shadow-sm">
           {article.featured_image_url && (
             <div className="aspect-video relative">
               <Image
@@ -69,10 +70,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               </p>
             )}
             
-            <div 
-              className="font-['JetBrains_Mono',monospace] text-gray-800 prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: article.content || "" }}
-            />
+            <div className="font-['JetBrains_Mono',monospace] text-gray-800 prose prose-lg max-w-none">
+              <ReactMarkdown>{article.content || ""}</ReactMarkdown>
+            </div>
             
             <div className="mt-12 pt-6 border-t border-gray-200">
               <p className="font-['JetBrains_Mono',monospace] text-gray-500 text-sm">
