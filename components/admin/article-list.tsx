@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { nb } from "date-fns/locale";
+import { Edit, Eye, Trash2 } from 'lucide-react';
 
 type Article = {
   id: string;
@@ -70,7 +71,7 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
         <Button
           size="sm"
@@ -123,15 +124,13 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {filteredArticles.map((article) => (
             <Card key={article.id}>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CardTitle className="text-lg">{article.title}</CardTitle>
-                    </div>
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-base truncate mb-2">{article.title}</CardTitle>
                     <div className="flex gap-2 mb-1">
                       <Badge variant="outline" className="text-xs">
                         {getCategoryLabel(article.category)}
@@ -140,34 +139,39 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
                         {article.published ? "Publisert" : "Utkast"}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-500">
-                      Sist oppdatert {formatDistanceToNow(new Date(article.updated_at), { addSuffix: true, locale: nb })}
+                    <p className="text-xs text-gray-500">
+                      Oppdatert {formatDistanceToNow(new Date(article.updated_at), { addSuffix: true, locale: nb })}
                     </p>
+                  </div>
+                  <div className="flex gap-1 shrink-0">
+                    <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0">
+                      <Link href={`/admin/articles/${article.id}/edit`}>
+                        <Edit className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    {article.published && (
+                      <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0">
+                        <Link href={`/artikkel/${article.slug}`} target="_blank">
+                          <Eye className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => deleteArticle(article.id)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                {article.excerpt && (
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">{article.excerpt}</p>
-                )}
-                <div className="flex gap-2">
-                  <Button asChild size="sm" variant="outline">
-                    <Link href={`/admin/articles/${article.id}/edit`}>Rediger</Link>
-                  </Button>
-                  {article.published && (
-                    <Button asChild size="sm" variant="outline">
-                      <Link href={`/artikkel/${article.slug}`} target="_blank">Forhåndsvis</Link>
-                    </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => deleteArticle(article.id)}
-                  >
-                    Slett
-                  </Button>
-                </div>
-              </CardContent>
+              {article.excerpt && (
+                <CardContent className="pt-0">
+                  <p className="text-sm text-gray-600 line-clamp-2">{article.excerpt}</p>
+                </CardContent>
+              )}
             </Card>
           ))}
         </div>

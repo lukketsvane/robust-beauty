@@ -101,7 +101,7 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
   return (
     <section id="om-oss" className="flex flex-col md:flex-row min-h-screen">
       {/* Pink section - Left on desktop, equal width */}
-      <div className="flex-1 bg-[#ffc2c2] flex flex-col">
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] flex flex-col">
         {/* Mobile layout */}
         <div className="md:hidden flex flex-col">
           <div className="px-6 py-12">
@@ -141,18 +141,7 @@ function ContentSection1({ activeSection }: { activeSection: string }) {
       </div>
 
       {/* Red section - Right on desktop, equal width */}
-      <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col relative">
-        {/* Logo in top right corner */}
-        <div className="absolute top-8 right-8">
-          <Image
-            src="/robust-logo.png"
-            alt="ROBUST Logo"
-            width={80}
-            height={80}
-            className="object-contain"
-          />
-        </div>
-
+      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col relative">
         <div className="mb-16">
           <DesktopNavigation activeItem={activeSection} />
         </div>
@@ -199,7 +188,7 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
   return (
     <section id="prosjekter" className="flex flex-col md:flex-row min-h-screen">
       {/* Red section with navigation - Left on desktop, equal width */}
-      <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col">
+      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col">
         <div className="mb-16">
           <DesktopNavigation activeItem={activeSection} />
         </div>
@@ -255,7 +244,7 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
       </div>
 
       {/* Pink section - Right on desktop, equal width */}
-      <div className="hidden md:flex flex-1 bg-[#ffc2c2] p-16 flex-col items-center justify-center">
+      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-16 flex-col items-center justify-center">
         <div className="max-w-[500px]">
           <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
             For å utvikle samfunnet til en post-kapitalistisk fremtid må vi ha flere tanker i hodet samtidig
@@ -278,7 +267,7 @@ function ContentSection2({ activeSection }: { activeSection: string }) {
 function ProfileCard({ name, description, hasPhoto }: { name: string; description: string; hasPhoto?: boolean }) {
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
-      {hasPhoto ? (
+      {hasPhoto && (
         <div className="w-20 h-20 rounded-full mb-4 mx-auto overflow-hidden relative">
           <Image
             src="/profile-photo.png"
@@ -287,8 +276,6 @@ function ProfileCard({ name, description, hasPhoto }: { name: string; descriptio
             className="object-cover"
           />
         </div>
-      ) : (
-        <div className="w-20 h-20 bg-[#e3160b] rounded-full mb-4 mx-auto" />
       )}
       <h3 className="font-['JetBrains_Mono',monospace] font-bold text-[#e3160b] text-left text-lg mb-3">
         {name}
@@ -313,7 +300,7 @@ function TeamSection({ activeSection }: { activeSection: string }) {
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
       {/* Red section with navigation - Left on desktop, equal width */}
-      <div className="hidden md:flex flex-1 bg-[#e3160b] p-16 flex-col">
+      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col">
         <div className="mb-16">
           <DesktopNavigation activeItem={activeSection} />
         </div>
@@ -335,7 +322,7 @@ function TeamSection({ activeSection }: { activeSection: string }) {
       </div>
 
       {/* Pink section with profiles - Right on desktop, equal width */}
-      <div className="flex-1 bg-[#ffc2c2] p-6 md:p-16">
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-[1200px] mx-auto">
           {teamMembers.map((member, index) => (
             <ProfileCard key={index} name={member.name} description={member.description} hasPhoto={member.hasPhoto} />
