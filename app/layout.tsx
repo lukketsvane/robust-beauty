@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { AnalyticsTracker } from '@/components/analytics-tracker'
 import './globals.css'
 
 const jetbrainsMono = JetBrains_Mono({ 
@@ -53,6 +54,7 @@ export default function RootLayout({
   return (
     <html lang="no">
       <body className={`${jetbrainsMono.variable} font-sans antialiased`}>
+        <AnalyticsTracker />
         {children}
         <Analytics />
       </body>
