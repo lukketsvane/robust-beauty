@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,9 +27,10 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [filter, setFilter] = useState<string>("all");
   const { toast } = useToast();
-  const supabase = createClient();
 
   useEffect(() => {
+    const supabase = createClient();
+    
     const channel = supabase
       .channel('articles-changes')
       .on(
@@ -73,7 +74,7 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase]);
+  }, []); // Empty dependency array - only run once on mount
 
   const filteredArticles = articles.filter(article => {
     if (filter === "all") return true;
