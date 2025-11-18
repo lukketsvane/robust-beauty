@@ -148,9 +148,9 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
           {filteredArticles.map((article) => (
             <Card key={article.id}>
               <CardHeader className="pb-3">
-                <div className="flex justify-between items-start gap-2">
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-base mb-2 truncate">
+                <div className="flex flex-wrap justify-between items-start gap-2">
+                  <div className="flex-1 min-w-0 max-w-full">
+                    <CardTitle className="text-base mb-2 break-words">
                       {article.title}
                     </CardTitle>
                     <div className="flex gap-2 mb-1 flex-wrap">
