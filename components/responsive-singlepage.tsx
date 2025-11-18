@@ -239,7 +239,7 @@ function ContentSection2() {
               src="/white-shell.jpeg"
               alt="Shell on green background"
               fill
-              className="object-cover"
+              className="object-contain"
             />
           </div>
         </div>
@@ -277,32 +277,128 @@ function ProfileCard({ name, description, hasPhoto, photoUrl }: {
   );
 }
 
-function TeamSection({ teamMembers }: { teamMembers: any[] }) {
-  console.log("[v0] TeamSection rendering with", teamMembers.length, "members");
-  
+function TeamMembersSection({ teamMembers }: { teamMembers: any[] }) {
+  return (
+    <section className="flex flex-col md:flex-row min-h-screen">
+      {/* Pink section with profiles - Left on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
+        <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
+          <h2 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[32px] leading-relaxed mb-4 font-bold">
+            Våre medlemmer
+          </h2>
+          {teamMembers.length === 0 ? (
+            <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-center p-8">
+              Laster medlemmer...
+            </p>
+          ) : (
+            teamMembers.map((member, index) => (
+              <ProfileCard 
+                key={index} 
+                name={member.name} 
+                description={member.description} 
+                hasPhoto={member.has_photo}
+                photoUrl={member.photo_url}
+              />
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Red section - Right on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 flex flex-col items-center justify-center">
+        <div className="max-w-[500px]">
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed mb-12 text-left">
+            Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
+          </p>
+          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
+            <Image
+              src="/robust-logo.png"
+              alt="ROBUST Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function IMediaSection() {
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchArticles() {
+      const response = await fetch('/api/articles/i-media');
+      if (response.ok) {
+        const data = await response.json();
+        setArticles(data);
+      }
+    }
+    fetchArticles();
+  }, []);
+
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
-      {/* Pink section with profiles - Right on desktop, equal width */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
-        {teamMembers.length === 0 ? (
-          <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
+      {/* Left section - Pink background with articles */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16 bg-[rgba(227,22,11,1)]">
+        <div className="max-w-[600px] mx-auto">
+          {articles.length === 0 ? (
             <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-center p-8">
-              Laster teammedlemmer...
+              Laster medieoppslag...
             </p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
-            {teamMembers.map((member) => (
-              <ProfileCard 
-                key={member.id} 
-                name={member.name} 
-                description={member.role || member.cv_text?.substring(0, 150) + '...'} 
-                hasPhoto={!!member.featured_image_url}
-                photoUrl={member.featured_image_url}
-              />
-            ))}
-          </div>
-        )}
+          ) : (
+            <div className="grid grid-cols-1 gap-6">
+              {articles.slice(0, 3).map((article) => (
+                <Link 
+                  key={article.id}
+                  href={`/artikkel/${article.slug}`}
+                  className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
+                  {article.featured_image_url && (
+                    <div className="aspect-video relative">
+                      <Image
+                        src={article.featured_image_url || "/placeholder.svg"}
+                        alt={article.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-lg font-bold mb-2">
+                      {article.title}
+                    </h3>
+                    {article.excerpt && (
+                      <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-sm line-clamp-2">
+                        {article.excerpt}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Right section - Red background */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 bg-[rgba(255,194,194,1)]">
+        <div className="flex-1 flex flex-col justify-center max-w-[600px] mx-auto text-foreground">
+          <h2 className="font-['JetBrains_Mono',monospace] text-[32px] leading-relaxed mb-8 font-bold text-[rgba(227,22,11,1)]">
+            I media
+          </h2>
+          <p className="font-['JetBrains_Mono',monospace] text-[18px] leading-relaxed mb-6 text-secondary-foreground">
+            Se hvor ROBUST har vært omtalt i media og våre egne oppslag.
+          </p>
+          
+          <Link 
+            href="/i-media"
+            className="mt-4 font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit text-secondary-foreground"
+          >
+            Se alle oppslag
+          </Link>
+        </div>
       </div>
     </section>
   );
@@ -325,30 +421,22 @@ function InspirationSection({ activeSection }: { activeSection: string }) {
           <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[20px] md:text-[24px] leading-relaxed mb-6 font-bold">
             Sneglhuset er perfekt konstruert for at sneglen skal kunne bære det med sin egen muskelkraft.
           </p>
-          <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[16px] md:text-[18px] leading-relaxed mb-8">
-            Gjennom de siste tiårene har det blitt et internasjonalt symbol for nedvekst-bevegelsen til inspirasjon for oss mennesker om å ikke bære mer enn det jorden vår - hjemmet vårt - klarer
+          <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[16px] md:text-[18px] leading-relaxed mb-4">
+            Gjennom de siste tiårene har det blitt et internasjonalt symbol for nedvekst-bevegelsen til inspirasjon for oss mennesker om å ikke bære mer enn det jorden vår - hjemmet vårt - klarer.
+          </p>
+          <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-[16px] md:text-[18px] leading-relaxed">
+            Kontakt oss på{' '}
+            <a 
+              href="mailto:kontakt@foreningenrobust.no" 
+              className="font-bold underline hover:opacity-80 transition-opacity"
+            >
+              kontakt@foreningenrobust.no
+            </a>
           </p>
         </div>
         
-        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-8 space-y-6">
-          <div>
-            <h3 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-xl font-bold mb-3">
-              Kontakt oss
-            </h3>
-            <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-base">
-              E-post:{' '}
-              <a 
-                href="mailto:kontakt@foreningenrobust.no" 
-                className="text-[#e3160b] underline hover:opacity-80 transition-opacity"
-              >
-                kontakt@foreningenrobust.no
-              </a>
-            </p>
-          </div>
-          
-          <div className="border-t border-gray-200 pt-6">
-            <NewsletterSignup />
-          </div>
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-8">
+          <NewsletterSignup />
         </div>
       </div>
     </section>
@@ -378,7 +466,7 @@ function Footer({ activeSection }: { activeSection: string }) {
   );
 }
 
-export default function ResponsiveSinglepage({ teamMembers }: { teamMembers: any[] }) {
+export default function ResponsiveSinglepage({ teamMembers = [] }: { teamMembers?: any[] }) {
   const [activeSection, setActiveSection] = useState("Om oss");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -426,7 +514,8 @@ export default function ResponsiveSinglepage({ teamMembers }: { teamMembers: any
       <main className="mt-[72px]">
         <ContentSection1 />
         <ContentSection2 />
-        <TeamSection teamMembers={teamMembers} />
+        <TeamMembersSection teamMembers={teamMembers} />
+        <IMediaSection />
         <InspirationSection activeSection={activeSection} />
         <Footer activeSection={activeSection} />
       </main>
