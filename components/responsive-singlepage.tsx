@@ -302,7 +302,7 @@ function TeamSection() {
 
       {/* Pink section with profiles - Right on desktop, equal width */}
       <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-[1200px] mx-auto">
+        <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
           {teamMembers.map((member, index) => (
             <ProfileCard key={index} name={member.name} description={member.description} hasPhoto={member.hasPhoto} />
           ))}

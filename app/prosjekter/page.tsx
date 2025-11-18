@@ -2,16 +2,16 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 export default async function ProsjekterPage() {
   const supabase = await createClient();
   
-  const { data: articles } = await supabase
-    .from("articles")
+  const { data: projects } = await supabase
+    .from("projects")
     .select("*")
-    .eq("category", "prosjekter")
     .eq("published", true)
-    .order("created_at", { ascending: false });
+    .order("order_index", { ascending: true });
 
   return (
     <div className="min-h-screen bg-[#ffc2c2]">
@@ -53,42 +53,57 @@ export default async function ProsjekterPage() {
             </p>
           </div>
 
-          {/* Articles Grid */}
-          {articles && articles.length > 0 && (
+          {projects && projects.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((article) => (
-                <Link 
-                  key={article.id}
-                  href={`/artikkel/${article.slug}`}
+              {projects.map((project) => (
+                <div 
+                  key={project.id}
                   className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                 >
-                  {article.featured_image_url && (
+                  {project.featured_image_url && (
                     <div className="aspect-video relative">
                       <Image
-                        src={article.featured_image_url || "/placeholder.svg"}
-                        alt={article.title}
+                        src={project.featured_image_url || "/placeholder.svg"}
+                        alt={project.title}
                         fill
                         className="object-cover"
                       />
                     </div>
                   )}
                   <div className="p-6">
-                    <h3 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-xl font-bold mb-3">
-                      {article.title}
-                    </h3>
-                    {article.excerpt && (
-                      <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-sm line-clamp-3">
-                        {article.excerpt}
+                    <div className="flex items-center gap-2 mb-3">
+                      <h3 className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-xl font-bold">
+                        {project.title}
+                      </h3>
+                      {project.status && (
+                        <span className={`text-xs px-2 py-1 rounded font-['JetBrains_Mono',monospace] ${
+                          project.status === 'ongoing' ? 'bg-green-100 text-green-800' :
+                          project.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {project.status === 'ongoing' ? 'Pågående' : 
+                           project.status === 'completed' ? 'Fullført' : 'Planlagt'}
+                        </span>
+                      )}
+                    </div>
+                    {project.description && (
+                      <p className="font-['JetBrains_Mono',monospace] text-gray-700 text-sm mb-3">
+                        {project.description}
                       </p>
                     )}
+                    {project.content && (
+                      <div className="font-['JetBrains_Mono',monospace] text-gray-600 text-sm prose prose-sm">
+                        <ReactMarkdown>{project.content}</ReactMarkdown>
+                      </div>
+                    )}
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           )}
 
-          {/* No articles message */}
-          {(!articles || articles.length === 0) && (
+          {/* No projects message */}
+          {(!projects || projects.length === 0) && (
             <div className="bg-white rounded-lg p-8">
               <p className="font-['JetBrains_Mono',monospace] text-gray-600 text-left">
                 Ingen prosjekter publisert ennå.
