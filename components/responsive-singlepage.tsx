@@ -133,17 +133,13 @@ function DesktopHeader({ activeSection }: { activeSection: string }) {
 function ContentSection1() {
   return (
     <section id="om-oss" className="flex flex-col md:flex-row min-h-screen">
-      {/* Pink section - Left on desktop, equal width */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] flex flex-col items-start justify-center py-[auto]">
-        {/* Mobile layout */}
-        <div className="md:hidden flex flex-col">
-          <div className="px-6 py-12">
-            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed text-left">
-              For å utvikle samfunnet til en post-kapitalistisk fremtid må vi holde minst to tanker i hodet samtidig
-            </p>
-          </div>
-          
-          <div className="w-full aspect-[3/4] relative">
+      {/* Pink section - Left on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] flex flex-col items-center justify-center p-6 md:p-16">
+        <div className="w-full max-w-[600px] mx-auto">
+          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-8 md:mb-12 text-left">
+            For å utvikle samfunnet til en post-kapitalistisk fremtid må vi holde minst to tanker i hodet samtidig
+          </p>
+          <div className="aspect-[3/4] w-full relative">
             <Image
               src="/penguins.jpeg"
               alt="Two penguins together"
@@ -153,35 +149,18 @@ function ContentSection1() {
             />
           </div>
         </div>
-
-        {/* Desktop layout */}
-        <div className="hidden md:flex md:flex-col md:items-center md:justify-center md:p-16">
-          <div className="w-full max-w-[600px]">
-            <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
-              For å utvikle samfunnet til en post-kapitalistisk fremtid må vi holde minst to tanker i hodet samtidig
-            </p>
-            <div className="aspect-[3/4] w-full relative">
-              <Image
-                src="/penguins.jpeg"
-                alt="Two penguins together"
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
       </div>
 
-      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col relative">
-        <div className="flex-1 flex flex-col justify-center">
-          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
+      {/* Red section - Right on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 flex flex-col justify-center">
+        <div className="w-full max-w-[600px] mx-auto">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[24px] md:text-[32px] leading-relaxed mb-6 md:mb-8 font-bold">
             Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
           </h2>
-          <p className="font-['JetBrains_Mono',monospace] text-white text-[20px] leading-relaxed mb-6">
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] md:text-[20px] leading-relaxed mb-6">
             Våre tre retningsstyrere for dette arbeidet er
           </p>
-          <ul className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed space-y-4">
+          <ul className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed space-y-4">
             <li>Å forankre arbeidet akademisk og teoretisk i degrowth.</li>
             <li>Å jobbe for økt forestillingsevne om en fremtid vi kan glede oss til</li>
             <li>Å bruke kunst og kreativ formidling til å gjøre oss forstått</li>
@@ -189,7 +168,7 @@ function ContentSection1() {
           
           <Link 
             href="/om-oss"
-            className="mt-8 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit"
+            className="mt-8 inline-block text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity"
           >
             Les mer
           </Link>
@@ -202,15 +181,16 @@ function ContentSection1() {
 function ContentSection2() {
   return (
     <section id="prosjekter" className="flex flex-col md:flex-row min-h-screen">
-      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col">
-        <div className="flex-1 flex flex-col justify-center">
-          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
+      {/* Red section - Left on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 flex flex-col justify-center">
+        <div className="w-full max-w-[600px] mx-auto">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[24px] md:text-[32px] leading-relaxed mb-6 md:mb-8 font-bold">
             Våre prosjekter
           </h2>
-          <p className="font-['JetBrains_Mono',monospace] text-white text-[20px] leading-relaxed mb-6">
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] md:text-[20px] leading-relaxed mb-6">
             Vi jobber aktivt med ulike prosjekter for å spre kunnskap om postvekst samfunn gjennom:
           </p>
-          <ul className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed space-y-4">
+          <ul className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed space-y-4">
             <li>Forskningsbasert analyse og formidling</li>
             <li>Kreative verksteder og arrangementer</li>
             <li>Samarbeid med organisasjoner og institusjoner</li>
@@ -218,17 +198,17 @@ function ContentSection2() {
           
           <Link 
             href="/prosjekter"
-            className="mt-8 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit"
+            className="mt-8 inline-block text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity"
           >
             Les mer
           </Link>
         </div>
       </div>
 
-      {/* Pink section - Right on desktop, equal width */}
-      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-16 flex-col items-center justify-center">
-        <div className="w-full max-w-[600px]">
-          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
+      {/* Pink section - Right on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16 flex flex-col items-center justify-center">
+        <div className="w-full max-w-[600px] mx-auto">
+          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-8 md:mb-12 text-left">
             For å utvikle samfunnet til en post-kapitalistisk fremtid må vi ha flere tanker i hodet samtidig
           </p>
           <div className="aspect-square w-full max-w-[450px] mx-auto relative">
@@ -337,18 +317,36 @@ function IMediaSection() {
 
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16">
-        <div className="flex-1 flex flex-col justify-center max-w-[600px] mx-auto">
-          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-8 font-bold">
+      {/* Pink section - Left on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16 flex flex-col items-center justify-center">
+        <div className="w-full max-w-[600px] mx-auto">
+          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-8 md:mb-12 text-left">
+            Her finner du oversikt over medieoppslag og artikler fra ROBUST.
+          </p>
+          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
+            <Image
+              src="/white-shell.jpeg"
+              alt="Shell on green background"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Red section - Right on desktop */}
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 flex flex-col justify-center">
+        <div className="w-full max-w-[600px] mx-auto">
+          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[24px] md:text-[32px] leading-relaxed mb-6 md:mb-8 font-bold">
             I media
           </h2>
-          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed mb-6">
+          <p className="font-['JetBrains_Mono',monospace] text-white text-[16px] md:text-[18px] leading-relaxed mb-6">
             Se hvor ROBUST har vært omtalt i media og våre egne oppslag.
           </p>
           
           <Link 
             href="/i-media"
-            className="mt-4 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit mb-8"
+            className="mt-4 inline-block text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity mb-8"
           >
             Se alle oppslag
           </Link>
@@ -366,23 +364,6 @@ function IMediaSection() {
               ))}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Right section - Pink background */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
-        <div className="flex flex-col items-center justify-center h-full max-w-[500px] mx-auto">
-          <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
-            Her finner du oversikt over medieoppslag og artikler fra ROBUST.
-          </p>
-          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
-            <Image
-              src="/white-shell.jpeg"
-              alt="Shell on green background"
-              fill
-              className="object-contain"
-            />
-          </div>
         </div>
       </div>
     </section>
