@@ -248,13 +248,18 @@ function ContentSection2() {
 }
 
 // Profile Card Component
-function ProfileCard({ name, description, hasPhoto }: { name: string; description: string; hasPhoto?: boolean }) {
+function ProfileCard({ name, description, hasPhoto, photoUrl }: { 
+  name: string; 
+  description: string; 
+  hasPhoto?: boolean;
+  photoUrl?: string;
+}) {
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
-      {hasPhoto && (
+      {hasPhoto && photoUrl && (
         <div className="w-20 h-20 rounded-full mb-4 mx-auto overflow-hidden relative">
           <Image
-            src="/profile-photo.png"
+            src={photoUrl || "/placeholder.svg"}
             alt={name}
             fill
             className="object-cover"
@@ -271,42 +276,32 @@ function ProfileCard({ name, description, hasPhoto }: { name: string; descriptio
   );
 }
 
-function TeamSection() {
-  const teamMembers = [
-    { name: "Christina Lund", description: "Aula er en digital plattform som forenkler deltakelse i lokaldemokratiet. Innbyggere kan dele sine tanker og kunnskap når det passer dem.", hasPhoto: true },
-    { name: "Eline Mannino", description: "Aula er en digital plattform som gjør det lett å engasjere seg i lokaldemokratiet. Innbyggere kan bidra med innspill og kunnskap når det passer dem." },
-    { name: "Thomas Røkås", description: "Aula er en digital plattform som gjør det enkelt å være med i lokaldemokratiet. Innbyggere kan dele sine meninger og kunnskap når det passer dem." },
-    { name: "Sigrid Løvlie", description: "Aula er en digital plattform som gjør det lett å delta i lokaldemokratiet. Innbyggere kan dele innspill og kunnskap når det passer dem." },
-    { name: "Anna Nordahl Carlsen", description: "Aula er en digital plattform som forenkler deltakelse i lokaldemokratiet. Innbyggere kan dele sine tanker og kunnskap når det passer dem." },
-  ];
-
+function TeamSection({ teamMembers }: { teamMembers: any[] }) {
+  console.log("[v0] TeamSection rendering with", teamMembers.length, "members");
+  
   return (
     <section id="i-media" className="flex flex-col md:flex-row min-h-screen">
-      <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-16 flex-col">
-        <div className="flex-1 flex flex-col justify-center">
-          <h2 className="font-['JetBrains_Mono',monospace] text-white text-[28px] leading-relaxed mb-8 font-bold">
-            ROBUST i media
-          </h2>
-          <p className="font-['JetBrains_Mono',monospace] text-white text-[18px] leading-relaxed mb-6">
-            Se hvor vi har vært omtalt og våre egne bidrag i mediebildet.
-          </p>
-          
-          <Link 
-            href="/i-media"
-            className="mt-8 text-white font-['JetBrains_Mono',monospace] font-normal text-[18px] underline hover:opacity-80 transition-opacity w-fit"
-          >
-            Les mer
-          </Link>
-        </div>
-      </div>
-
       {/* Pink section with profiles - Right on desktop, equal width */}
       <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16">
-        <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
-          {teamMembers.map((member, index) => (
-            <ProfileCard key={index} name={member.name} description={member.description} hasPhoto={member.hasPhoto} />
-          ))}
-        </div>
+        {teamMembers.length === 0 ? (
+          <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
+            <p className="font-['JetBrains_Mono',monospace] text-[#e3160b] text-center p-8">
+              Laster teammedlemmer...
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
+            {teamMembers.map((member) => (
+              <ProfileCard 
+                key={member.id} 
+                name={member.name} 
+                description={member.role || member.cv_text?.substring(0, 150) + '...'} 
+                hasPhoto={!!member.featured_image_url}
+                photoUrl={member.featured_image_url}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -359,7 +354,7 @@ function Footer({ activeSection }: { activeSection: string }) {
   );
 }
 
-export default function ResponsiveSinglepage() {
+export default function ResponsiveSinglepage({ teamMembers }: { teamMembers: any[] }) {
   const [activeSection, setActiveSection] = useState("Om oss");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -407,7 +402,7 @@ export default function ResponsiveSinglepage() {
       <main className="mt-[72px]">
         <ContentSection1 />
         <ContentSection2 />
-        <TeamSection />
+        <TeamSection teamMembers={teamMembers} />
         <InspirationSection activeSection={activeSection} />
         <Footer activeSection={activeSection} />
       </main>
