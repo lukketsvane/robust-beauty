@@ -2,6 +2,11 @@
 
 import { useState } from 'react';
 
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 export function NewsletterSignup() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -9,6 +14,19 @@ export function NewsletterSignup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email.trim()) {
+      setStatus('error');
+      setMessage('Vennligst skriv inn en e-postadresse');
+      return;
+    }
+
+    if (!isValidEmail(email.trim())) {
+      setStatus('error');
+      setMessage('Vennligst skriv inn en gyldig e-postadresse');
+      return;
+    }
+
     setStatus('loading');
     setMessage('');
 
@@ -16,7 +34,7 @@ export function NewsletterSignup() {
       const response = await fetch('/api/newsletter/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email: email.trim() })
       });
 
       const data = await response.json();
@@ -45,7 +63,13 @@ export function NewsletterSignup() {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status === 'error') {
+                setStatus('idle');
+                setMessage('');
+              }
+            }}
             placeholder="din@epost.no"
             required
             disabled={status === 'loading'}

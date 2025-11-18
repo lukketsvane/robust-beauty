@@ -5,7 +5,8 @@ export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
 
-    if (!email || !email.includes('@')) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email.trim())) {
       return NextResponse.json(
         { error: 'Ugyldig e-postadresse' },
         { status: 400 }
