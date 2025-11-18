@@ -156,11 +156,11 @@ function ContentSection1() {
 
         {/* Desktop layout */}
         <div className="hidden md:flex md:flex-col md:items-center md:justify-center md:p-16">
-          <div className="max-w-[500px]">
+          <div className="w-full max-w-[600px]">
             <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
               For å utvikle samfunnet til en post-kapitalistisk fremtid må vi holde minst to tanker i hodet samtidig
             </p>
-            <div className="aspect-[3/4] w-full max-w-[400px] mx-auto relative">
+            <div className="aspect-[3/4] w-full relative">
               <Image
                 src="/penguins.jpeg"
                 alt="Two penguins together"
@@ -194,9 +194,6 @@ function ContentSection1() {
             Les mer
           </Link>
         </div>
-
-        {/* Image in bottom right */}
-        
       </div>
     </section>
   );
@@ -230,7 +227,7 @@ function ContentSection2() {
 
       {/* Pink section - Right on desktop, equal width */}
       <div className="hidden md:flex md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-16 flex-col items-center justify-center">
-        <div className="max-w-[500px]">
+        <div className="w-full max-w-[600px]">
           <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
             For å utvikle samfunnet til en post-kapitalistisk fremtid må vi ha flere tanker i hodet samtidig
           </p>
@@ -282,11 +279,11 @@ function TeamMembersSection({ teamMembers }: { teamMembers: any[] }) {
     <section className="flex flex-col md:flex-row min-h-screen">
       {/* Pink section with text/image now on LEFT */}
       <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] p-6 md:p-16 flex flex-col items-center justify-center">
-        <div className="max-w-[500px]">
+        <div className="w-full max-w-[600px]">
           <p className="font-['JetBrains_Mono',monospace] text-[#000000] text-[18px] leading-relaxed mb-12 text-left">
             Vi er et kunnskapskollektiv som jobber for å spre kunnskap om et postvekst samfunn.
           </p>
-          <div className="aspect-square w-full max-w-[450px] mx-auto relative">
+          <div className="aspect-square w-full relative">
             <Image
               src="/images/design-mode/michelle-atkinson-aYgTkQRVUAk-unsplash%204.png"
               alt="ROBUST Logo"

@@ -62,9 +62,7 @@ export default function AdminLoginPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Admin Login</CardTitle>
-              <CardDescription>
-                Logg inn for å administrere nettstedet
-              </CardDescription>
+
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin}>
