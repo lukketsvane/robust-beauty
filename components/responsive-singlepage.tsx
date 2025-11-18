@@ -134,7 +134,7 @@ function ContentSection1() {
   return (
     <section id="om-oss" className="flex flex-col md:flex-row min-h-screen">
       {/* Pink section - Left on desktop, equal width */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] flex flex-col">
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#ffc2c2] flex flex-col items-start justify-center py-[auto]">
         {/* Mobile layout */}
         <div className="md:hidden flex flex-col">
           <div className="px-6 py-12">
@@ -298,8 +298,8 @@ function TeamMembersSection({ teamMembers }: { teamMembers: any[] }) {
       </div>
 
       {/* Red section with team members now on RIGHT */}
-      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16">
-        <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto">
+      <div className="md:flex-none md:w-1/2 md:basis-1/2 md:max-w-[50%] bg-[#e3160b] p-6 md:p-16 my-[a] md:py-16">
+        <div className="flex flex-col gap-4 md:gap-6 max-w-[600px] mx-auto justify-center s py-16">
           <h2 className="font-['JetBrains_Mono',monospace] text-white text-[32px] leading-relaxed mb-4 font-bold">
             Våre medlemmer
           </h2>
