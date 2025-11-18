@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { nb } from "date-fns/locale";
 import { Edit, Eye, Trash2, User } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 type Article = {
   id: string;
@@ -25,34 +26,77 @@ type Article = {
 export function ArticleList({ initialArticles }: { initialArticles: Article[] }) {
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [filter, setFilter] = useState<string>("all");
+  const { toast } = useToast();
 
   useEffect(() => {
-    loadArticles();
-  }, []);
-
-  async function loadArticles() {
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from("articles")
-      .select("*")
-      .order("created_at", { ascending: false });
+    
+    const channel = supabase
+      .channel('articles-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'articles'
+        },
+        (payload) => {
+          console.log('[v0] Real-time article change:', payload);
+          
+          if (payload.eventType === 'INSERT') {
+            setArticles(prev => [payload.new as Article, ...prev]);
+            toast({
+              title: "Ny artikkel opprettet",
+              description: `"${(payload.new as Article).title}" ble opprettet`,
+            });
+          } else if (payload.eventType === 'UPDATE') {
+            setArticles(prev => 
+              prev.map(article => 
+                article.id === payload.new.id ? payload.new as Article : article
+              )
+            );
+            toast({
+              title: "Artikkel oppdatert",
+              description: `"${(payload.new as Article).title}" ble oppdatert`,
+            });
+          } else if (payload.eventType === 'DELETE') {
+            setArticles(prev => 
+              prev.filter(article => article.id !== payload.old.id)
+            );
+            toast({
+              title: "Artikkel slettet",
+              description: "Artikkelen ble slettet",
+              variant: "destructive",
+            });
+          }
+        }
+      )
+      .subscribe((status) => {
+        console.log('[v0] Realtime subscription status:', status);
+      });
 
-    if (!error && data) {
-      setArticles(data);
-    }
-  }
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []); // Empty dependency array - only subscribe once
 
-  async function deleteArticle(id: string) {
-    if (!confirm("Er du sikker på at du vil slette denne artikkelen?")) return;
+  async function deleteArticle(id: string, title: string) {
+    if (!confirm(`Er du sikker på at du vil slette "${title}"?`)) return;
+
+    const previousArticles = [...articles];
+    setArticles(prev => prev.filter(article => article.id !== id));
 
     const supabase = createClient();
     const { error } = await supabase.from("articles").delete().eq("id", id);
 
     if (error) {
       console.error("Error deleting article:", error);
-      alert("Kunne ikke slette artikkel");
-    } else {
-      loadArticles();
+      setArticles(previousArticles);
+      toast({
+        title: "Feil ved sletting",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   }
 
@@ -173,7 +217,7 @@ export function ArticleList({ initialArticles }: { initialArticles: Article[] })
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={() => deleteArticle(article.id)}
+                      onClick={() => deleteArticle(article.id, article.title)}
                       className="h-8 w-8 p-0 flex-shrink-0"
                     >
                       <Trash2 className="h-4 w-4" />

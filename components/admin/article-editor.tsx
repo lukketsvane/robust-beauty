@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { ImageUpload } from "./image-upload";
 import { MarkdownEditor } from "./markdown-editor";
 import type { AdminUser } from "@/lib/auth";
+import { useToast } from "@/hooks/use-toast";
 
 type Article = {
   id: string;
@@ -31,6 +32,7 @@ type ArticleEditorProps = {
 
 export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [title, setTitle] = useState(article?.title || "");
   const [slug, setSlug] = useState(article?.slug || "");
   const [excerpt, setExcerpt] = useState(article?.excerpt || "");
@@ -59,7 +61,11 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
 
   const handleSave = async () => {
     if (!title || !slug) {
-      alert("Tittel og slug er påkrevd");
+      toast({
+        title: "Feil",
+        description: "Tittel og slug er påkrevd",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -124,8 +130,16 @@ export function ArticleEditor({ article, currentUser }: ArticleEditorProps) {
 
     if (error) {
       console.error("Error saving article:", error);
-      alert("Kunne ikke lagre artikkel: " + error.message);
+      toast({
+        title: "Feil ved lagring",
+        description: error.message,
+        variant: "destructive",
+      });
     } else {
+      toast({
+        title: "Lagret!",
+        description: article ? "Artikkelen ble oppdatert" : "Artikkelen ble opprettet",
+      });
       router.push("/admin");
       router.refresh();
     }
